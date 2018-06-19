@@ -1,23 +1,24 @@
-GPU=0
+GPU=1
 CUDNN=0
 CUDNN_HALF=0
-OPENCV=0
+OPENCV=1
 AVX=0
-OPENMP=0
-LIBSO=0
+OPENMP=1
+LIBSO=1
 
 # set GPU=1 and CUDNN=1 to speedup on GPU
 # set CUDNN_HALF=1 to further speedup 3 x times (Mixed-precision using Tensor Cores) on GPU Tesla V100, Titan V, DGX-2
 # set AVX=1 and OPENMP=1 to speedup on CPU (if error occurs then set AVX=0)
 
-DEBUG=0
+DEBUG=1
 
-ARCH= -gencode arch=compute_30,code=sm_30 \
+#ARCH= -gencode arch=compute_30,code=sm_30 \
       -gencode arch=compute_35,code=sm_35 \
       -gencode arch=compute_50,code=[sm_50,compute_50] \
       -gencode arch=compute_52,code=[sm_52,compute_52] \
 	  -gencode arch=compute_61,code=[sm_61,compute_61]
 
+ARCH= -gencode arch=compute_20,code=[sm_20,sm_21]
 OS := $(shell uname)
 
 # Tesla V100
