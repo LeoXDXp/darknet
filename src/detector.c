@@ -6,7 +6,9 @@
 #include "box.h"
 #include "demo.h"
 #include "option_list.h"
-
+// cvRound patch
+#include "math.h"
+int cvRound(double value) {return(ceil(value));}
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/core/core_c.h"
