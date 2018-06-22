@@ -19,49 +19,25 @@ package main
 import "C"
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"strconv"
-
 	"github.com/hybridgroup/mjpeg"
 	"gocv.io/x/gocv"
+	"log"
+	"net/http"
 )
 
 var (
-	//deviceID int
-	err      error
-	//webcam   *gocv.VideoCapture
-	stream   *mjpeg.Stream
+	err    error
+	stream *mjpeg.Stream
 )
+
 // export StreamDarkNet
-func StreamDarkNet(port int, host string ) {
-	/*if len(os.Args) < 3 {
-		fmt.Println("How to run:\n\tmjpeg-streamer [camera ID] [host:port]")
-		return
-	}*/
-
-	// parse args
-	//deviceID, _ = strconv.Atoi(os.Args[1])
-	//host := os.Args[2]
-
-	// open webcam
-	/*webcam, err = gocv.VideoCaptureDevice(deviceID)
-	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
-		return
-	}
-	defer webcam.Close()
-	*/
+func StreamDarkNet() {
 	// create the mjpeg stream
 	stream = mjpeg.NewStream()
-
 	// start capturing
 	go Capture()
-
-	fmt.Println("Capturing. Point your browser to " + host)
-
+	host := "8880" //Could be read from cfg file to make it "dynamic"
+	log.Printf("Capturing. Point your browser to %s", host)
 	// start http server
 	http.Handle("/", stream)
 	log.Fatal(http.ListenAndServe(host, nil))
@@ -73,10 +49,6 @@ func Capture() {
 	defer img.Close()
 
 	for {
-		/*if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
-			return
-		}*/
 		if img.Empty() {
 			continue
 		}
