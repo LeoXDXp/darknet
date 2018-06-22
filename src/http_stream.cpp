@@ -129,7 +129,7 @@ public:
 		fd_set rread = master;
 		struct timeval to = { 0,timeout };
 		if (::select(maxfd+1, &rread, NULL, NULL, &to) <= 0)
-			cout << "No one listening. Exit true" << endl;
+			std::cout << "No one listening. Exit true" << std::endl;
 			return true; // nothing broken, there's just noone listening
 
 		std::vector<uchar> outbuf;
