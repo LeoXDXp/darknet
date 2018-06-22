@@ -258,7 +258,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 				int port = http_stream_port;
 				int timeout = 200;
 				int jpeg_quality = 30;	// 1 - 100
-				std::cout << "Callin send_mjpeg" << std::endl;
+				printf("Calling send_mjpeg\n");
 				send_mjpeg(show_img, port, timeout, jpeg_quality);
 			}
 
