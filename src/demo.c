@@ -261,9 +261,9 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 				int timeout = 200;
 				int jpeg_quality = 30;	// 1 - 100
 				printf("Calling send_mjpeg\n");
+				GoCapture( send_mjpeg(show_img, port, timeout, jpeg_quality) );
 				// Feed Go Streaming
-				CvMat* EncodedImage = cvEncodeImage(".jpg",show_img, 0);
-				GoCapture(EncodedImage);
+				//GoCapture(show_img);
 				//send_mjpeg(show_img, port, timeout, jpeg_quality);
 			}
 
