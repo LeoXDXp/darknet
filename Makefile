@@ -125,10 +125,10 @@ $(APPNAMESO): $(LIBNAMESO) src/yolo_v2_class.hpp src/yolo_console_dll.cpp
 endif
 
 $(EXEC): $(OBJS)
-	$(CPP) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CPP) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) ./src/outputStreamer.so
 
 $(OBJDIR)%.o: %.c $(DEPS)
-	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
+	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@ 
 
 $(OBJDIR)%.o: %.cpp $(DEPS)
 	$(CPP) $(COMMON) $(CFLAGS) -c $< -o $@
