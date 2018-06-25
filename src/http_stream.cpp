@@ -203,7 +203,7 @@ char* send_mjpeg(IplImage* ipl, int port, int timeout, int quality ) {
         std::vector<int> params;
         params.push_back(IMWRITE_JPEG_QUALITY);
         params.push_back(quality);
-        cv::imencode(".jpg", frame, outbuf, params);
+        cv::imencode(".jpg", mat, outbuf, params);
 	std::cout << " MJPEG-stream sent. \n";
 	return reinterpret_cast<char*>(outbuf.data());;
 }
