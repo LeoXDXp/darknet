@@ -20,7 +20,7 @@ import "C"
 
 import (
 	"github.com/hybridgroup/mjpeg"
-	"gocv.io/x/gocv"
+	//"gocv.io/x/gocv"
 	"log"
 	"net/http"
 )
@@ -35,7 +35,7 @@ func StreamDarkNet() {
 	// create the mjpeg stream
 	stream = mjpeg.NewStream()
 	// start capturing
-	go Capture()
+	//go Capture()
 	host := "8880" //Could be read from cfg file to make it "dynamic"
 	log.Printf("Capturing. Point your browser to %s", host)
 	// start http server
@@ -43,19 +43,10 @@ func StreamDarkNet() {
 	log.Fatal(http.ListenAndServe(host, nil))
 }
 
-//export Capture
-func Capture() {
-	img := gocv.NewMat()
-	defer img.Close()
-
-	for {
-		if img.Empty() {
-			continue
-		}
-
-		buf, _ := gocv.IMEncode(".jpg", img)
-		stream.UpdateJPEG(buf)
-	}
+//export GoCapture
+func GoCapture(buf []byte) {
+	//buf, _ := gocv.IMEncode(".jpg", (Mat)img)
+	stream.UpdateJPEG(buf)
 }
 
 func main() {}
