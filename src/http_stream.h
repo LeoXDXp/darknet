@@ -7,7 +7,7 @@ extern "C" {
 #endif
 #include "image.h"
 
-void send_mjpeg(IplImage* ipl, int port, int timeout, int quality);
+char* send_mjpeg(IplImage* ipl, int port, int timeout, int quality);
 CvCapture* get_capture_webcam(int index);
 CvCapture* get_capture_video_stream(char *path);
 IplImage* get_webcam_frame(CvCapture *cap);
