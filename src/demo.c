@@ -225,7 +225,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     double before = get_wall_time();
 
     // Start Go Streaming
-    StreamDarkNet();
+    //StreamDarkNet();
     while(1){
         ++count;
         if(1){
