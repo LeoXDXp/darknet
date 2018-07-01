@@ -129,7 +129,7 @@ public:
 		fd_set rread = master;
 		struct timeval to = { 0,timeout };
 		if (::select(maxfd+1, &rread, NULL, NULL, &to) <= 0)
-			std::cout << "No one listening. Exit true" << std::endl;
+			std::cout << "No one listening. Exit true" << endl;
 			return true; // nothing broken, there's just noone listening
 
 		std::vector<uchar> outbuf;
@@ -179,6 +179,10 @@ public:
 			{
 				char head[400];
 				sprintf(head, "--mjpegstream\r\nContent-Type: image/jpeg\r\nContent-Length: %zu\r\n\r\n", outlen);
+				/*int _write(int sock, char const*const s, int len){
+                			if (len < 1) { len = strlen(s); }
+                			return ::send(sock, s, len, 0);     }
+				 */
 				_write(s, head, 0);
 				int n = _write(s, (char*)(&outbuf[0]), outlen);
 				//cerr << "known client " << s << " " << n << endl;
@@ -199,7 +203,7 @@ void send_mjpeg(IplImage* ipl, int port, int timeout, int quality ) {
 	static MJPGWriter wri(port, timeout, quality);
 	cv::Mat mat = cv::cvarrToMat(ipl);
 	wri.write(mat);
-	std::cout << " MJPEG-stream sent. \n" << std::endl;
+	std::cout << " MJPEG-stream sent. \n" << endl;
 	/*std::vector<uchar> outbuf;
         std::vector<int> params;
         params.push_back(IMWRITE_JPEG_QUALITY);
