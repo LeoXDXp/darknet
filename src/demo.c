@@ -16,7 +16,7 @@
 #endif
 
 #define FRAMES 3
-#include "outputStreamer.h"
+//#include "outStream.h"
 #ifdef OPENCV
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
@@ -226,6 +226,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 
     // Start Go Streaming
     //StreamDarkNet();
+    //cStreamer();
     while(1){
         ++count;
         if(1){
@@ -264,6 +265,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 				// Feed Go Streaming
 				//GoCapture(show_img);
 				send_mjpeg(show_img, port, timeout, jpeg_quality);
+				//get_root(show_img);
 			}
 
 			// save video file
