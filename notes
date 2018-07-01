@@ -1,0 +1,8 @@
+darknet.c has main
+detector.c has run_detector, called by detector argument
+demo.c has demo, called by run_detector with demo argument
+
+If no X interface, must run with -dont_show
+Yolov3 weights test 1: 
+MaxFPS CPU   DeviceRAM HostRAM
+6	133% 1.5G	2.2%
