@@ -259,12 +259,11 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 				//int port = 8090;
 				int port = http_stream_port;
 				int timeout = 200;
-				int jpeg_quality = 30;	// 1 - 100
+				int jpeg_quality = 100;	// 1 - 100
 				printf("Calling send_mjpeg\n");
-				GoCapture( send_mjpeg(show_img, port, timeout, jpeg_quality) );
 				// Feed Go Streaming
 				//GoCapture(show_img);
-				//send_mjpeg(show_img, port, timeout, jpeg_quality);
+				send_mjpeg(show_img, port, timeout, jpeg_quality);
 			}
 
 			// save video file

@@ -195,17 +195,18 @@ public:
 };
 // ----------------------------------------
 
-char* send_mjpeg(IplImage* ipl, int port, int timeout, int quality ) {
-	//static MJPGWriter wri(port, timeout, quality);
+void send_mjpeg(IplImage* ipl, int port, int timeout, int quality ) {
+	static MJPGWriter wri(port, timeout, quality);
 	cv::Mat mat = cv::cvarrToMat(ipl);
-	//wri.write(mat);
-	std::vector<uchar> outbuf;
+	wri.write(mat);
+	std::cout << " MJPEG-stream sent. \n" << std::endl;
+	/*std::vector<uchar> outbuf;
         std::vector<int> params;
         params.push_back(IMWRITE_JPEG_QUALITY);
         params.push_back(quality);
         cv::imencode(".jpg", mat, outbuf, params);
 	std::cout << " MJPEG-stream sent. \n";
-	return reinterpret_cast<char*>(outbuf.data());;
+	return reinterpret_cast<char*>(outbuf.data());*/
 }
 // ----------------------------------------
 
