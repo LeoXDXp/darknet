@@ -170,9 +170,10 @@ public:
 				 */
 				_write(s, head, 0);
 				int n = _write(s, (char*)(&outbuf[0]), outlen);
-				std::cout << "known client " << s << " " << n << endl;
+				std::cout << "known client " << s << " n: " << n << " outlen:" << outlen << endl;
 				if (n < outlen)	{
 					cerr << "kill client " << s << endl;
+					std::cout << "kill client " <<  s << endl;
 					::shutdown(s, 2);
 					FD_CLR(s, &master);
 				}
