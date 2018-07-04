@@ -128,7 +128,7 @@ public:
 		params.push_back(quality);
 		cv::imencode(".jpg", frame, outbuf, params);
 		size_t outlen = outbuf.size();
-		std::cout << "write: " << s << "-" << maxfd << endl;
+		std::cout << "write: " << outlen << "-" << maxfd << endl;
 #ifdef _WIN32 
 		for (unsigned i = 0; i<rread.fd_count; i++){
 			int addrlen = sizeof(SOCKADDR);
