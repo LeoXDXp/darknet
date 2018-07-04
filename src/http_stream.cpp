@@ -55,17 +55,14 @@ using namespace cv;
 #include "http_stream.h"
 #include "image.h"
 
-
-class MJPGWriter
-{
+class MJPGWriter {
 	SOCKET sock;
 	SOCKET maxfd;
 	fd_set master;
 	int timeout; // master sock timeout, shutdown after timeout millis.
 	int quality; // jpeg compression [1..100]
 
-	int _write(int sock, char const*const s, int len)
-	{
+	int _write(int sock, char const*const s, int len){
 		if (len < 1) { len = strlen(s); }
 		return ::send(sock, s, len, 0);
 	}
@@ -82,34 +79,29 @@ public:
 			open(port);
 	}
 
-	~MJPGWriter()
-	{
+	~MJPGWriter(){
 		release();
 	}
 
-	bool release()
-	{
+	bool release()	{
 		if (sock != INVALID_SOCKET)
 			::shutdown(sock, 2);
 		sock = (INVALID_SOCKET);
 		return false;
 	}
 
-	bool open(int port)
-	{
+	bool open(int port){
 		sock = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 		SOCKADDR_IN address;
 		address.sin_addr.s_addr = INADDR_ANY;
 		address.sin_family = AF_INET;
 		address.sin_port = htons(port);	// ::htons(port);
-		if (::bind(sock, (SOCKADDR*)&address, sizeof(SOCKADDR_IN)) == SOCKET_ERROR)
-		{
+		if (::bind(sock, (SOCKADDR*)&address, sizeof(SOCKADDR_IN)) == SOCKET_ERROR){
 			cerr << "error : couldn't bind sock " << sock << " to port " << port << "!" << endl;
 			return release();
 		}
-		if (::listen(sock, 10) == SOCKET_ERROR)
-		{
+		if (::listen(sock, 10) == SOCKET_ERROR)	{
 			cerr << "error : couldn't listen on sock " << sock << " on port " << port << " !" << endl;
 			return release();
 		}
@@ -119,13 +111,11 @@ public:
 		return true;
 	}
 
-	bool isOpened()
-	{
+	bool isOpened()	{
 		return sock != INVALID_SOCKET;
 	}
 
-	bool write(const Mat & frame)
-	{
+	bool write(const Mat & frame){
 		fd_set rread = master;
 		struct timeval to = { 0,timeout };
 		if (::select(maxfd+1, &rread, NULL, NULL, &to) <= 0)
@@ -138,25 +128,21 @@ public:
 		params.push_back(quality);
 		cv::imencode(".jpg", frame, outbuf, params);
 		size_t outlen = outbuf.size();
-
+		std::cout << "write: " << s << "-" << maxfd << endl;
 #ifdef _WIN32 
-		for (unsigned i = 0; i<rread.fd_count; i++)
-		{
+		for (unsigned i = 0; i<rread.fd_count; i++){
 			int addrlen = sizeof(SOCKADDR);
 			SOCKET s = rread.fd_array[i];    // fd_set on win is an array, while ...
 #else         
-		for (int s = 0; s<=maxfd; s++)
-		{
+		for (int s = 0; s<=maxfd; s++){
 			socklen_t addrlen = sizeof(SOCKADDR);
 			if (!FD_ISSET(s, &rread))      // ... on linux it's a bitmask ;)
 				continue;
 #endif                   
-			if (s == sock) // request on master socket, accept and send main header.
-			{
+			if (s == sock) {// request on master socket, accept and send main header.
 				SOCKADDR_IN address = { 0 };
 				SOCKET      client = ::accept(sock, (SOCKADDR*)&address, &addrlen);
-				if (client == SOCKET_ERROR)
-				{
+				if (client == SOCKET_ERROR){
 					cerr << "error : couldn't accept connection on sock " << sock << " !" << endl;
 					return false;
 				}
@@ -175,9 +161,7 @@ public:
 					"\r\n", 0);
 				cerr << "new client " << client << endl;
 				std::cout << "new client " << client << endl;
-			}
-			else // existing client, just stream pix
-			{
+			} else {// existing client, just stream pix
 				char head[400];
 				sprintf(head, "--mjpegstream\r\nContent-Type: image/jpeg\r\nContent-Length: %zu\r\n\r\n", outlen);
 				/*int _write(int sock, char const*const s, int len){
@@ -187,19 +171,16 @@ public:
 				_write(s, head, 0);
 				int n = _write(s, (char*)(&outbuf[0]), outlen);
 				std::cout << "known client " << s << " " << n << endl;
-				if (n < outlen)
-				{
+				if (n < outlen)	{
 					cerr << "kill client " << s << endl;
 					::shutdown(s, 2);
 					FD_CLR(s, &master);
 				}
 			}
-		}
-		return true;
+		}return true;
 	}
 };
 // ----------------------------------------
-
 void send_mjpeg(IplImage* ipl, int port, int timeout, int quality ) {
 	static MJPGWriter wri(port, timeout, quality);
 	cv::Mat mat = cv::cvarrToMat(ipl);
