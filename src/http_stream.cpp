@@ -174,6 +174,7 @@ public:
 					"Content-Type: multipart/x-mixed-replace; boundary=mjpegstream\r\n"
 					"\r\n", 0);
 				cerr << "new client " << client << endl;
+				std::cout << "new client " << client << endl;
 			}
 			else // existing client, just stream pix
 			{
@@ -185,7 +186,7 @@ public:
 				 */
 				_write(s, head, 0);
 				int n = _write(s, (char*)(&outbuf[0]), outlen);
-				//cerr << "known client " << s << " " << n << endl;
+				std::cout << "known client " << s << " " << n << endl;
 				if (n < outlen)
 				{
 					cerr << "kill client " << s << endl;
@@ -311,8 +312,7 @@ image image_data_augmentation(IplImage* ipl, int w, int h,
 
 	// HSV augmentation
 	// CV_BGR2HSV, CV_RGB2HSV, CV_HSV2BGR, CV_HSV2RGB
-	if (ipl->nChannels >= 3)
-	{
+	if (ipl->nChannels >= 3){
 		cv::Mat hsv_src;
 		cvtColor(sized, hsv_src, CV_BGR2HSV);	// also BGR -> RGB
 	
@@ -326,18 +326,14 @@ image image_data_augmentation(IplImage* ipl, int w, int h,
 		cv::merge(hsv, hsv_src);
 
 		cvtColor(hsv_src, sized, CV_HSV2RGB);	// now RGB instead of BGR
-	}
-	else
-	{
+	}else{
 		sized *= dexp;
 	}
 
 	// Mat -> IplImage -> image
 	IplImage src = sized;
 	image out = ipl_to_image(&src);
-
 	return out;
 }
-
 
 #endif	// OPENCV
