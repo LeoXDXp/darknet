@@ -1,3 +1,5 @@
+#Install instructions: https://docs.google.com/document/d/1ijM6Tq47KWh3RHjEj-Y91MK-2oFvY-1mBOY1h818dlY/edit
+
 darknet.c has main
 detector.c has run_detector, called by detector argument
 demo.c has demo, called by run_detector with demo argument
